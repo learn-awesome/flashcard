@@ -10,4 +10,6 @@ use localStorage to store user's recall performance in order to determine practi
 
 See components/FlashCard.vue and components/PracticeSet.vue to learn more about how this works.
 
+An earlier version is available here: https://codesandbox.io/s/flashcard-sfc-with-spaced-repetition-in-vuejs-465eg?file=/components/FlashCard.vue
+
 This was inspired by https://quantum.country
