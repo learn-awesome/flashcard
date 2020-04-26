@@ -1,0 +1,13 @@
+{
+    "name": "flashcard",
+    "version": "0.9.0",
+    "description": "FlashCard PracticeSet component with spaced repetition",
+    "author": "@nileshtrivedi for LearnAwesome.org",
+    "license": "CC BY-NC-ND",
+    "keywords": [],
+    "main": "index.js",
+    "dependencies": {
+      "vue": "2.5.3"
+    }
+  }
+  
