@@ -14,4 +14,4 @@ See [FlashCard.vue](https://github.com/learn-awesome/flashcard/blob/master/compo
 
 An earlier version is available here: https://codesandbox.io/s/flashcard-sfc-with-spaced-repetition-in-vuejs-465eg?file=/components/FlashCard.vue
 
-This was built by the learnawesome.org community, inspired by https://quantum.country
+This was built by the https://learnawesome.org community, inspired by https://quantum.country
