@@ -179,6 +179,7 @@ export default {
     message: function() {
       if (this.answered === "forgot") return "Could not recall.";
       if (this.answered === "recalled") return "Good job!";
+      return "";
     },
     debugMessage: function() {
       return (
@@ -254,11 +255,11 @@ button {
   margin-bottom: 8px;
   border-radius: 8px;
   cursor: pointer;
-  opacity: 80%;
+  opacity: 0.8;
 }
 
 button:hover {
-  opacity: 100%;
+  opacity: 1.0;
   font-weight: bold;
 }
 
@@ -293,12 +294,12 @@ div.showlevel p {
   display: inline-block;
   padding: 3px 6px;
   margin: 3px;
-  opacity: 50%;
+  opacity: 0.5;
   border: thin solid green;
 }
 
 div.showlevel p.active {
   background-color: greenyellow;
-  opacity: 100%;
+  opacity: 0.5;
 }
 </style>

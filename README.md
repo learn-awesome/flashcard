@@ -15,3 +15,12 @@ See [FlashCard.vue](https://github.com/learn-awesome/flashcard/blob/master/compo
 An earlier version is available here: https://codesandbox.io/s/flashcard-sfc-with-spaced-repetition-in-vuejs-465eg?file=/components/FlashCard.vue
 
 This was built by the https://learnawesome.org community, inspired by https://quantum.country
+
+# Build
+
+Install Vue CLI with: `npm install`
+
+WebComponents in `dist` folder are generated with:
+`./node_modules/.bin/vue-cli-service build --target wc --inline-vue --name practice-set components/PracticeSet.vue`
+
+See `demo.html` for example of how to use the web-component version in plain-old HTML pages without any module bundlers
