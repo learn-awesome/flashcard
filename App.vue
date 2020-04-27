@@ -6,7 +6,11 @@
       <a
         href="https://quantum.country/"
         target="_blank"
-      >mnemonic media like this</a>.
+      >mnemonic media like this</a>. The code is
+      <a
+        href="https://github.com/learn-awesome/flashcard"
+        target="_blank"
+      >available on Github</a>.
       <br>
       <br>In your webpage, you would use the
       <code>PracticeSet</code> component specifying
