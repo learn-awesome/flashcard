@@ -14,13 +14,15 @@ use localStorage to store user's recall performance in order to determine practi
 
 See [FlashCard.vue](https://github.com/learn-awesome/flashcard/blob/master/components/FlashCard.vue) and [PracticeSet.vue](https://github.com/learn-awesome/flashcard/blob/master/components/PracticeSet.vue) to learn more about how this works.
 
-An earlier version is available here: https://codesandbox.io/s/flashcard-sfc-with-spaced-repetition-in-vuejs-465eg?file=/components/FlashCard.vue
-
 This was built by the https://learnawesome.org community, inspired by https://quantum.country
 
-# Build
+# Develop
 
-Install Vue CLI with: `npm install`
+Install Vue CLI with: `npm install` and then serve:
+
+`./node_modules/.bin/vue serve -o App.vue`
+
+# Build
 
 WebComponents in `dist` folder are generated with:
 `./node_modules/.bin/vue-cli-service build --target wc --inline-vue --name practice-set components/PracticeSet.vue`
