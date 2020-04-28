@@ -18,7 +18,7 @@
       user's recall performance in order to determine practice frequency.
     </p>
     <h3>A single flashcard</h3>
-    <FlashCard qid="qid1" debug="on">
+    <FlashCard qid="qid1" debug="off">
       <template v-slot:question>When did India become independent?</template>
       <template v-slot:answer>1947</template>
     </FlashCard>
@@ -26,7 +26,24 @@
     <br>
     <br>
     <h3>A set of flashcards to practice</h3>
-    <PracticeSet debug="on" showskip="on"></PracticeSet>
+    <PracticeSet debug="on" showskip="on">
+      <FlashCard qid="qid1" debug="on">
+        <template v-slot:question>When did India become independent?</template>
+        <template v-slot:answer>1947</template>
+      </FlashCard>
+      <FlashCard qid="qid2" debug="on">
+        <template v-slot:question>How many countries in UN security council?</template>
+        <template v-slot:answer>5</template>
+      </FlashCard>
+      <FlashCard qid="qid3" debug="on">
+        <template v-slot:question>In CSS, flex is the value of which property?</template>
+        <template v-slot:answer>display</template>
+      </FlashCard>
+      <FlashCard qid="qid4" debug="on">
+        <template v-slot:question>COVID-19 is caused by which family of viruses?</template>
+        <template v-slot:answer>Coronavirus</template>
+      </FlashCard>
+    </PracticeSet>
   </div>
 </template>
 

@@ -22,7 +22,6 @@ TODO:
 - Test the level incrementing logic
 - Handle localStorage edge cases
 - Polish the design via CSS
-- Show the current level (see quantum.country as example)
 - Combined different localStorage items into a single serialized JSON object
 -->
 
@@ -30,32 +29,15 @@ TODO:
   <div class="flashcard" v-on:click="flip()" :style="{cursor: flipped ? 'default' : 'pointer'}">
     <div class="question">
       <slot name="question"></slot>
-      {{ question }}
     </div>
 
-    <div class="answer" :style="{visibility: flipped ? 'visible' : 'hidden'}">
-      <slot name="answer"></slot>
-      {{ answer }}
+    <div class="answer">
+      <slot v-if="flipped" name="answer"></slot>
+      <div v-show="!flipped" class="tip">Recall the answer and click to reveal.</div>
     </div>
 
-    <div v-show="flipped">
-      <button
-        v-if="answered == null"
-        v-on:click="recall('forgot')"
-        class="forgotbutton"
-      >I could not recall the answer</button>
-      
-      <button
-        v-if="answered == null"
-        v-on:click="recall('recalled')"
-        class="recalledbutton"
-      >I recalled it easily</button>
-      
-      <button v-if="debug === 'on'" v-on:click.stop="reset()" class="resetbutton">Reset</button>
+    
 
-      <div v-if="answered" class="message">{{ message }}</div>
-    </div>
-    <div v-if="!flipped" class="tip">Recall and click to flip the card.</div>
     <div class="showlevel">
       <p v-bind:class="{ active: (level == 1) }" title="Every 1 day">1</p>
       <p v-bind:class="{ active: (level == 2) }" title="Every 2 day">2</p>
@@ -69,6 +51,27 @@ TODO:
       <p v-bind:class="{ active: (level == 10) }" title="Every 16 months">10</p>
       <p v-bind:class="{ active: (level == 11) }" title="Long-term">11</p>
     </div>
+
+    <div :style="{visibility: flipped ? 'visible' : 'hidden'}" class="actions">
+      <button
+        v-if="answered == null"
+        v-on:click="recall('forgot')"
+        class="forgotbutton"
+      >Didn't recall</button>
+      
+      <button
+        v-if="answered == null"
+        v-on:click="recall('recalled')"
+        class="recalledbutton"
+      >Recalled</button>
+      
+      
+
+      <div v-if="answered" class="message">{{ message }}</div>
+    </div>
+
+    <button v-if="debug === 'on'" v-on:click.stop="reset()" class="resetbutton">Reset</button>
+
     <div v-if="debug === 'on'" class="debug-message">{{ debugMessage }}</div>
   </div>
 </template>
@@ -105,6 +108,7 @@ export default {
   },
   methods: {
     flip: function() {
+      if(this.flipped) return;
       this.flipped = true;
 
       // set last_practiced_timestamp
@@ -120,6 +124,11 @@ export default {
         window.localStorage.setItem(this.qid + "_level", 1);
         this.level = 1;
       }
+    },
+
+    makeUnanswered: function() {
+      // invoked from skip() in PracticeSet
+      this.answered = null;
     },
 
     reset: function() {
@@ -154,7 +163,7 @@ export default {
           this.level = Math.min(this.level + 1, 11);
           window.localStorage.setItem(this.qid + "_level", this.level);
           //alert("You reached level: " + this.level);
-          if (this.level === 11) alert("Congrats! You reached level 11! :-)");
+          // if (this.level === 11) alert("Congrats! You reached level 11! :-)");
         }
 
         // set last_success_timestamp. pracetice_timestamp was already set in flip()
@@ -172,7 +181,8 @@ export default {
 
       this.answered = value;
 
-      this.$emit("answered", value); // this is handled in PracticeSet.vue
+      if(this.$parent && this.$parent.onAnswered)
+        this.$parent.onAnswered(this.qid, value); // this is handled in PracticeSet.vue
     }
   },
   computed: {
@@ -220,24 +230,27 @@ export default {
   font-weight: bold;
   font-size: 2em;
   border-bottom: 2px;
-  border-bottom: thin solid #dddddd;
+  border-bottom: 1px solid #f6f0ff;
   text-align: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
 }
 
 .answer {
   padding: 12px;
-  background-color: #d5e8f8;
+  background-color: #fcfaff;
   font-weight: bold;
   font-size: 2em;
   text-align: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  min-height: 200px;
+  vertical-align: middle;
 }
 
 .tip {
-  font-size: 1.5em;
-  color: #999;
-  position: relative;
-  bottom: 40px;
-  text-align: center;
+  color: #bbb;
+  font-weight: normal;
 }
 
 .message {
@@ -245,9 +258,16 @@ export default {
   text-align: center;
 }
 
+.actions {
+  display:flex;
+  justify-content: space-around;
+  padding-top: 10px;
+  margin-bottom: 10px;
+}
+
 button {
   display: inline-block;
-  width: 49%;
+  width: 40%;
   font-weight: bold;
   font-size: 16px;
   padding-top: 10px;
@@ -287,19 +307,25 @@ div.showlevel {
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-around;
-  background-color: lime;
+  background-color: #fcfaff;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f6f0ff;
 }
 
 div.showlevel p {
   display: inline-block;
-  padding: 3px 6px;
+  padding: 6px 6px;
   margin: 3px;
   opacity: 0.5;
   border: thin solid green;
+  border-radius: 5px;
+  width: 32px;
+  height: 32px;
+  text-align:center;
 }
 
 div.showlevel p.active {
-  background-color: greenyellow;
-  opacity: 0.5;
+  background-color: lime;
+  font-weight: bold;
 }
 </style>

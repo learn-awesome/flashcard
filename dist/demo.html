@@ -4,5 +4,22 @@
 <script src="./practice-set.js"></script>
 
 
-<practice-set></practice-set>
+<practice-set debug="off" showskip="off">
+    <flash-card qid="qid1" debug="on">
+      <template v-slot:question>When did India become independent?</template>
+      <template v-slot:answer>1947</template>
+    </flash-card>
+    <flash-card qid="qid2" debug="on">
+      <template v-slot:question>How many countries in UN security council?</template>
+      <template v-slot:answer>5</template>
+    </flash-card>
+    <flash-card qid="qid3" debug="on">
+      <template v-slot:question>In CSS, flex is the value of which property?</template>
+      <template v-slot:answer>display</template>
+    </flash-card>
+    <flash-card qid="qid4" debug="on">
+      <template v-slot:question>COVID-19 is caused by which family of viruses?</template>
+      <template v-slot:answer>Coronavirus</template>
+    </flash-card>
+  </practice-set>
 

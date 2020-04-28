@@ -17,22 +17,15 @@ TODO:
 -->
 <template>
   <div class="practiceset">
-    <FlashCard
-      v-for="fc in firstCard"
-      :key="fc.qid"
-      :qid="fc.qid"
-      :question="fc.question"
-      :answer="fc.answer"
-      :debug="debug"
-      @answered="onAnswered(fc.qid, $event)"
-    />
-    <div v-if="firstCard.length === 0">You're all done for now. Good job! :-)</div>
-    <button v-if="showskip === 'on' && firstCard.length > 0" v-on:click="skip()">Skip</button>
+    <slot>VueJS WebComponents not supported in this browser.</slot>
+    <div>
+      <p v-show="getCards().length === 0">No FlashCards remaining in this set.</p>
+      <button v-show="showskip === 'on' && getCards().length > 1" v-on:click="skip()">Skip</button>
+    </div>
   </div>
 </template>
 
 <script>
-import FlashCard from "./FlashCard.vue";
 
 export default {
   props: {
@@ -43,41 +36,19 @@ export default {
     showskip: {
       type: String,
       required: false
+    },
+    childTagName: {
+      type: String,
+      default: "FlashCard"
     }
   },
-  components: { FlashCard },
-  data: function() {
-    return {
-      flashcards: [
-        {
-          qid: "qid1",
-          question: "When did India become independent?",
-          answer: "1947"
-        },
-        {
-          qid: "qid2",
-          question: "How many countries in UN security council?",
-          answer: "5"
-        },
-        {
-          qid: "qid3",
-          question: "In CSS, flex is the value of which property?",
-          answer: "display"
-        },
-        {
-          qid: "qid4",
-          question: "COVID-19 is caused by which family of viruses?",
-          answer: "Coronavirus"
-        }
-      ]
-    };
-  },
+
   methods: {
     onAnswered: function(qid, answer) {
       console.log(qid, answer);
       // assuming that only one card is displayed at a time, so qid is the first
       if (answer === "recalled") {
-        this.flashcards.shift();
+        this.removeFirstCard();
       } else {
         // forgot, so need to practice right away
         this.skip();
@@ -85,16 +56,47 @@ export default {
     },
     skip: function() {
       // pop the first card and append it at the last
-      this.flashcards.push(this.flashcards.shift());
-    }
-  },
-  computed: {
-    firstCard: function() {
-      var self = this;
-      return self.flashcards.filter(function(fc, index) {
-        return index === 0;
+      let firstCard = this.$children.shift();
+      if(firstCard){
+        firstCard.makeUnanswered();
+        this.$children.push(firstCard);
+      }
+      this.setChildVisibility();
+      this.$forceUpdate();
+    },
+    getCards: function() {
+      const cards = this.$children.filter(
+        child =>
+          child.$vnode.tag.match(`^vue-component-\\d+-${this.childTagName}$`) !==
+          null
+      );
+      return cards;
+    },
+
+    removeFirstCard: function(){
+      let card = this.getCards()[0];
+      if(card) {
+        card.$el.style.display = 'none'; // This shouldn't be necessary if we're going to destroy the first child, but somehow is.
+        card.$destroy();
+      }
+      this.setChildVisibility();
+      this.$forceUpdate();
+    },
+
+    setChildVisibility(){
+      // console.log("We only want to show the first flashcard");
+      this.getCards().forEach(function(card,index){
+        if(index > 0)
+          card.$el.style.display = 'none';
+        else
+          card.$el.style.display = 'inline-block';
       });
     }
+  },
+  computed: {},
+  mounted() {
+    this.setChildVisibility();
+    this.$forceUpdate();
   }
 };
 </script>
@@ -108,5 +110,13 @@ export default {
 
 .practiceset {
   display: inline-block;
+}
+
+.practiceset .flash-card {
+  display: none;
+}
+
+.practiceset .flash-card:first-child {
+  display: block;
 }
 </style>
