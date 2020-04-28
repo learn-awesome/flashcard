@@ -1,6 +1,8 @@
 # flashcard
 
-VueJS components to add spaced-repetition based flashcard to any webpage. For a WIP demo, see: https://465eg.csb.app/
+VueJS components to add spaced-repetition based flashcard to any webpage.
+
+## Demo: https://465eg.csb.app/
 
 Authors can create their article in a medium that helps their readers not just read, but also REMEMBER their content.
 These components make it super-easy to achieve this without requiring any servers. LocalStorage is used to store user's progress on each question.
