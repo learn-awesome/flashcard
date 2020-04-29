@@ -216,13 +216,16 @@ export default {
 
 .flashcard {
   display: block;
-  min-width: 450px;
   margin: 0 1.0em;
   border-radius: 3px;
   color: #222;
   background-color: white;
   border: 2px solid purple;
   box-shadow: 3px 3px 20px rgb(70, 70, 196);
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  line-height: 1.4;
+  max-width: 960px;
+  -webkit-font-smoothing: antialiased;
 }
 
 .question {

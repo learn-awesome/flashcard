@@ -3,19 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <title>Demo of FlashCard Component</title>
-  <!-- Don't need vue as we have inlined it -->
-  <!-- <script src="https://unpkg.com/vue"></script> -->
-
-  <script src="dist/flash-card.min.js"></script>
+  <script src="https://unpkg.com/vue"></script>
+  <script src="dist/fc.js"></script>
 </head>
 
 <body>
-  <h1>Static HTML With PracticeSet as web component</h1>
+  <h1>Static HTML With PracticeSet and FlashCard as Web Components</h1>
   
-  <flash-card qid="qid1" debug="off">
-    <template v-slot:question>When did India become independent?</template>
-    <template v-slot:answer>1947</template>
-  </flash-card>
+  <!-- <fc-flash-card qid="qid1" debug="off">
+    <span slot="question">When did India become independent?</span>
+    <span slot="answer">1947</span>
+  </fc-flash-card> -->
+  
+  <fc-practice-set debug="off" showskip="off">
+    <fc-flash-card qid="qid1" debug="off">
+      <span slot="question">When did India become independent?</span>
+      <span slot="answer">1947</span>
+    </fc-flash-card>
+
+    <fc-flash-card qid="qid2" debug="off">
+      <span slot="question">How many countries in UN security council?</span>
+      <span slot="answer">5</span>
+    </fc-flash-card>
+
+    <fc-flash-card qid="qid3" debug="off">
+      <span slot="question">In CSS, flex is the value of which property?</span>
+      <span slot="answer">display</span>
+    </fc-flash-card>
+
+    <fc-flash-card qid="qid4" debug="off">
+      <span slot="question">COVID-19 is caused by which family of viruses?</span>
+      <span slot="answer">Coronavirus</span>
+    </fc-flash-card>
+  </fc-practice-set>
 
 </body>
 </html>

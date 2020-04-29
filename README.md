@@ -25,6 +25,6 @@ Install Vue CLI with: `npm install` and then serve:
 # Build
 
 WebComponents in `dist` folder are generated with:
-`./node_modules/.bin/vue-cli-service build --target wc --inline-vue components/*.vue`
+`./node_modules/.bin/vue-cli-service build --target wc --name fc 'components/*.vue'`
 
 See `demo.html` for example of how to use the web-component version in plain-old HTML pages without any module bundlers

@@ -70,6 +70,7 @@ export default {
           child.$vnode.tag.match(`^vue-component-\\d+-${this.childTagName}$`) !==
           null
       );
+      //console.log("Got cards:", cards);
       return cards;
     },
 
@@ -84,12 +85,15 @@ export default {
     },
 
     setChildVisibility(){
-      // console.log("We only want to show the first flashcard");
+      console.log("We only want to show the first flashcard");
       this.getCards().forEach(function(card,index){
-        if(index > 0)
+        if(index > 0) {
+          console.log("found later");
           card.$el.style.display = 'none';
-        else
+        } else {
+          console.log("found first");
           card.$el.style.display = 'block';
+        }
       });
     }
   },
