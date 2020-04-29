@@ -215,9 +215,9 @@ export default {
 }
 
 .flashcard {
-  display: inline-block;
-  max-width: 600px;
+  display: block;
   min-width: 450px;
+  margin: 0 1.0em;
   border-radius: 3px;
   color: #222;
   background-color: white;

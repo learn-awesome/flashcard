@@ -89,7 +89,7 @@ export default {
         if(index > 0)
           card.$el.style.display = 'none';
         else
-          card.$el.style.display = 'inline-block';
+          card.$el.style.display = 'block';
       });
     }
   },
@@ -109,7 +109,9 @@ export default {
 }
 
 .practiceset {
-  display: inline-block;
+  display: block;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .practiceset .flash-card {
