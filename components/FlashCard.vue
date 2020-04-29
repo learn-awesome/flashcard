@@ -57,7 +57,7 @@ TODO:
         v-if="answered == null"
         v-on:click="recall('forgot')"
         class="forgotbutton"
-      >Didn't recall</button>
+      >Didn't recall</button> 
       
       <button
         v-if="answered == null"
@@ -82,14 +82,6 @@ export default {
     qid: {
       type: String,
       required: true
-    },
-    question: {
-      type: String,
-      required: false // can be passed via slot
-    },
-    answer: {
-      type: String,
-      required: false // can be passed via slot
     },
     debug: {
       type: String,

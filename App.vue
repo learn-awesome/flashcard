@@ -18,9 +18,9 @@
       user's recall performance in order to determine practice frequency.
     </p>
     <h3>A single flashcard</h3>
-    <FlashCard qid="qid1" debug="off">
-      <template v-slot:question>When did India become independent?</template>
-      <template v-slot:answer>1947</template>
+    <FlashCard qid="qid1" debug="on">
+      <div slot="question">When did India become independent?</div>
+      <div slot="answer">1947</div>
     </FlashCard>
 
     <br>
