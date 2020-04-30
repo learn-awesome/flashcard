@@ -1,6 +1,6 @@
 # flashcard
 
-VueJS components to add spaced-repetition based flashcard to any webpage.
+VueJS components to add spaced-repetition based flashcard to any webpage. Less than 5KB gzipped, and 15KB unzipped.
 
 ## Demo: https://codepen.io/eshnil/pen/BaowoEW
 

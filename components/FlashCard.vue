@@ -85,10 +85,10 @@ export default {
       );
       this.practice_timestamp = current_date.toISOString();
 
-      if (!this.level) {
+      if (this.level == null) {
         // initialize level
-        window.localStorage.setItem(this.qid + "_level", 1);
-        this.level = 1;
+        window.localStorage.setItem(this.qid + "_level", 0);
+        this.level = 0;
       }
 
       this.$emit("flipped", this.qid, true);
@@ -118,7 +118,7 @@ export default {
         var previous_date = new Date(previous_ts);
 
         var diff_in_days = Math.floor(
-          (current_date.getTime() - previous_date.getTime()) / 1000.0
+          (current_date.getTime() - previous_date.getTime()) / (1000.0 * 3600 * 24)
         );
         if (diff_in_days > Math.pow(2, this.level)) {
           // increment level
