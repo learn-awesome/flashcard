@@ -1,78 +1,38 @@
-<!-- 
-
-Overview
-
-Every flashcard has these attributes:
-  qid: per-site unique identifier used for localStorage lookups, only passed via props
-  debug: on|off, only passed via props. Enables more logging & detailed messaging in UI.
-  question, answer: String/HTML. Passed via either props or slots (see PracticeSet.vue for example)
-  flipped: state variable that reveals the answer. Never persisted.
-  answered: state variable that shows a message after answering. Never persisted.
-  answer: forgot|recalled
-  level: 1-10. Stored in localStorage with key as <qid>_level
-  practice_timestamp: Last time this question was practiced
-  sucess_timestamp: Last time this question was successfully recalled
-
-Level determines when this flashcard will be selected for practice and if
-successfully recalled, when the level will be allowed to increment. If the user is
-able to successfully recall the answer after 2^level days, level gets incremented
-If the level reaches 11, this card won't be selected for practice at all.
-
-TODO:
-- Test the level incrementing logic
-- Handle localStorage edge cases
-- Polish the design via CSS
-- Combined different localStorage items into a single serialized JSON object
--->
-
 <template>
-  <div class="flashcard" v-on:click="flip()" :style="{cursor: flipped ? 'default' : 'pointer'}">
+  <div class="flashcard" v-on:click="flip()" :style="{cursor: flipped ? 'default' : 'pointer'}" title="Click anywhere to reveal">
     <div class="question">
-      <slot name="question"></slot>
+      <slot name="question"></slot>{{ question }}
     </div>
 
     <div class="answer">
-      <slot v-if="flipped" name="answer"></slot>
+      <slot v-if="flipped" name="answer"></slot> <p v-show="flipped">{{ answer }}</p>
       <div v-show="!flipped" class="tip">Recall the answer and click to reveal.</div>
     </div>
 
-    
-
-    <div class="showlevel">
-      <p v-bind:class="{ active: (level == 1) }" title="Every 1 day">1</p>
-      <p v-bind:class="{ active: (level == 2) }" title="Every 2 day">2</p>
-      <p v-bind:class="{ active: (level == 3) }" title="Every 4 day">3</p>
-      <p v-bind:class="{ active: (level == 4) }" title="Every 8 day">4</p>
-      <p v-bind:class="{ active: (level == 5) }" title="Every 16 day">5</p>
-      <p v-bind:class="{ active: (level == 6) }" title="Every 1 month">6</p>
-      <p v-bind:class="{ active: (level == 7) }" title="Every 2 months">7</p>
-      <p v-bind:class="{ active: (level == 8) }" title="Every 4 months">8</p>
-      <p v-bind:class="{ active: (level == 9) }" title="Every 8 months">9</p>
-      <p v-bind:class="{ active: (level == 10) }" title="Every 16 months">10</p>
-      <p v-bind:class="{ active: (level == 11) }" title="Long-term">11</p>
+    <div class="progress-bar">
+        <div class="progress-bar-fill" :style="{width: (''+(level/0.11)+'%')}">
+          <div class="progress-bar-label">{{ this.levelLabel }}</div>
+        </div>
     </div>
 
     <div :style="{visibility: flipped ? 'visible' : 'hidden'}" class="actions">
       <button
         v-if="answered == null"
-        v-on:click="recall('forgot')"
+        v-on:click.stop="recall('forgot')"
         class="forgotbutton"
+        title="Reset practice frequency to every day"
       >Didn't recall</button> 
       
       <button
         v-if="answered == null"
-        v-on:click="recall('recalled')"
+        v-on:click.stop="recall('recalled')"
         class="recalledbutton"
       >Recalled</button>
       
-      
-
-      <div v-if="answered" class="message">{{ message }}</div>
     </div>
 
     <button v-if="debug === 'on'" v-on:click.stop="reset()" class="resetbutton">Reset</button>
 
-    <div v-if="debug === 'on'" class="debug-message">{{ debugMessage }}</div>
   </div>
 </template>
 
@@ -83,6 +43,23 @@ export default {
       type: String,
       required: true
     },
+    question: {
+      type: String,
+      required: true
+    },
+    answer: {
+      type: String,
+      required: true
+    },
+    flipped: { 
+      type: Boolean,
+      required: true,
+      default: false
+    },
+    answered: { // step-2 to step-3. Value is forgot|recalled
+      type: String,
+      required: false
+    },
     debug: {
       type: String,
       required: false // default will be taken as false
@@ -91,8 +68,6 @@ export default {
   data: function() {
     var level_string = window.localStorage.getItem(this.qid + "_level");
     return {
-      flipped: false, // step-1 to step-2
-      answered: null, // step-2 to step-3. Value is forgot|recalled
       level: level_string ? parseInt(level_string, 10) : null,
       practice_timestamp: window.localStorage.getItem(this.qid + "_pts"),
       success_timestamp: window.localStorage.getItem(this.qid + "_sts")
@@ -100,8 +75,7 @@ export default {
   },
   methods: {
     flip: function() {
-      if(this.flipped) return;
-      this.flipped = true;
+      if(this.flipped) return; //already flipped. Do nothing.
 
       // set last_practiced_timestamp
       var current_date = new Date();
@@ -116,16 +90,12 @@ export default {
         window.localStorage.setItem(this.qid + "_level", 1);
         this.level = 1;
       }
-    },
 
-    makeUnanswered: function() {
-      // invoked from skip() in PracticeSet
-      this.answered = null;
+      this.$emit("flipped", this.qid, true);
     },
 
     reset: function() {
       this.flipped = false;
-      this.answered = null;
       window.localStorage.removeItem(this.qid + "_level");
       this.level = null;
       window.localStorage.removeItem(this.qid + "_pts");
@@ -141,7 +111,7 @@ export default {
       if (value === "recalled") {
         // check current date with last_success_timestamp
         // if the diff is more than 2^level days and value = 'recalled'
-        // then increase level by 1 with max = 10
+        // then increase level by 1 with max = 10 which is long-term
 
         // can be null but new Date(null) gives unix epoch which is perfect
         var previous_ts = window.localStorage.getItem(this.qid + "_sts");
@@ -150,9 +120,9 @@ export default {
         var diff_in_days = Math.floor(
           (current_date.getTime() - previous_date.getTime()) / 1000.0
         );
-        if (diff_in_days > Math.pow(2, this.level - 1)) {
+        if (diff_in_days > Math.pow(2, this.level)) {
           // increment level
-          this.level = Math.min(this.level + 1, 11);
+          this.level = Math.min(this.level + 1, 10);
           window.localStorage.setItem(this.qid + "_level", this.level);
           //alert("You reached level: " + this.level);
           // if (this.level === 11) alert("Congrats! You reached level 11! :-)");
@@ -166,34 +136,28 @@ export default {
         this.success_timestamp = current_date.toISOString();
       } else {
         // Decrement level or reset all the way to 1
-        this.level = 1; // Math.max(1, this.level - 1);
+        this.level = 0; // Math.max(1, this.level - 1);
         window.localStorage.setItem(this.qid + "_level", this.level);
-        //alert("Decrementing level to " + this.level);
       }
 
-      this.answered = value;
-
-      if(this.$parent && this.$parent.onAnswered)
-        this.$parent.onAnswered(this.qid, value); // this is handled in PracticeSet.vue
+      this.$emit("answered", this.qid, value);
     }
   },
   computed: {
-    message: function() {
-      if (this.answered === "forgot") return "Could not recall.";
-      if (this.answered === "recalled") return "Good job!";
-      return "";
-    },
-    debugMessage: function() {
-      return (
-        "qid = " +
-        this.qid +
-        ", level = " +
-        this.level +
-        ", pts = " +
-        this.practice_timestamp +
-        ", sts = " +
-        this.success_timestamp
-      );
+    levelLabel: function(){
+      return [
+        'Practice this everyday till you can answer it correctly',
+        'Practice this every 2 days till you can answer it correctly',
+        'Practice this every 4 days till you can answer it correctly',
+        'Practice this every 8 days till you can answer it correctly',
+        'Practice this every 16 days till you can answer it correctly',
+        'Practice this every 1 month',
+        'Practice this every 2 months till you can answer it correctly',
+        'Practice this every 4 months till you can answer it correctly',
+        'Practice this every 8 months till you can answer it correctly',
+        'Practice this every 16 months till you can answer it correctly',
+        '🎉 Long-term memory 😎'
+      ][this.level];
     }
   }
 };
@@ -208,7 +172,7 @@ export default {
 
 .flashcard {
   display: block;
-  margin: 0 1.0em;
+  margin: 0 16px;
   border-radius: 3px;
   color: #222;
   background-color: white;
@@ -216,7 +180,6 @@ export default {
   box-shadow: 3px 3px 20px rgb(70, 70, 196);
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   line-height: 1.4;
-  max-width: 960px;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -298,29 +261,29 @@ div.debug-message {
   text-align: center;
 }
 
-div.showlevel {
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-around;
-  background-color: #fcfaff;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #f6f0ff;
+.progress-bar {
+  width: 100%;
+  background-color: #fafcfa;
+  padding: 3px;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2);
+  position: relative;
 }
 
-div.showlevel p {
-  display: inline-block;
-  padding: 6px 6px;
-  margin: 3px;
-  opacity: 0.5;
-  border: thin solid green;
-  border-radius: 5px;
-  width: 32px;
-  height: 32px;
-  text-align:center;
+.progress-bar-fill {
+  display: block;
+  height: 22px;
+  background-color: #f0ddee;
+  border-radius: 3px;
+
+  transition: width 500ms ease-in-out;
 }
 
-div.showlevel p.active {
-  background-color: lime;
-  font-weight: bold;
+.progress-bar-label {
+    position: absolute;
+    z-index: 2;
+    color: black; /* Change according to needs */
+    text-align: center;
+    background-color: transparent;
+    width: 100%;
 }
 </style>

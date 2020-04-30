@@ -4,38 +4,57 @@
   <meta charset="UTF-8">
   <title>Demo of FlashCard Component</title>
   <script src="https://unpkg.com/vue"></script>
-  <script src="dist/fc.js"></script>
+  <!-- <script src="dist/CardSet.umd.min.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/gh/learn-awesome/flashcard@master/dist/CardSet.umd.min.js"></script>
 </head>
 
 <body>
-  <h1>Static HTML With PracticeSet and FlashCard as Web Components</h1>
-  
-  <!-- <fc-flash-card qid="qid1" debug="off">
-      <div slot="question">When did India become independent?</div>
-      <div slot="answer">1947</div>
-  </fc-flash-card> -->
-  
-  <fc-practice-set debug="off" showskip="off">
-    <fc-flash-card qid="qid1" debug="off">
-      <div slot="question">When did India become independent?</div>
-      <div slot="answer">1947</div>
-    </fc-flash-card>
+  <h1>CardSet Example</h1>
 
-    <fc-flash-card qid="qid2" debug="off">
-      <span slot="question">How many countries in UN security council?</span>
-      <span slot="answer">5</span>
-    </fc-flash-card>
+  <div id="mycardset">
+      <card-set></card-set>
+  </div>
 
-    <fc-flash-card qid="qid3" debug="off">
-      <span slot="question">In CSS, flex is the value of which property?</span>
-      <span slot="answer">display</span>
-    </fc-flash-card>
-
-    <fc-flash-card qid="qid4" debug="off">
-      <span slot="question">COVID-19 is caused by which family of viruses?</span>
-      <span slot="answer">Coronavirus</span>
-    </fc-flash-card>
-  </fc-practice-set>
+<script>
+    new Vue({
+      el: '#mycardset',
+      data: {
+        flashCards: [
+            {
+              qid: 'qid1',
+              question: 'When did India become independent?',
+              answer: '1947',
+              flipped: false,
+              answered: null
+            },
+            {
+              qid: 'qid2',
+              question: 'How many countries are permanent members of UN security council?',
+              answer: '5',
+              flipped: false,
+              answered: null
+            },
+            {
+              qid: 'qid3',
+              question: 'In CSS, flex is the value of which property?',
+              answer: 'display',
+              flipped: false,
+              answered: null
+            },
+            {
+              qid: 'qid4',
+              question: 'COVID-19 is caused by which family of viruses?',
+              answer: 'Coronavirus',
+              flipped: false,
+              answered: null
+            }
+        ]
+      },
+      components: {
+        'card-set': CardSet
+      }
+    })
+</script>
 
 </body>
 </html>
