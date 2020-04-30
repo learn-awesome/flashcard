@@ -7,7 +7,7 @@ VueJS components to add spaced-repetition based flashcard to any webpage.
 Authors can create their article in a medium that helps their readers not just read, but also REMEMBER their content.
 These components make it super-easy to achieve this without requiring any servers. LocalStorage is used to store user's progress on each question.
 
-![image](https://user-images.githubusercontent.com/51651338/80322913-91cd5600-8817-11ea-9939-6bd76d2f3df8.png)
+![image](https://user-images.githubusercontent.com/51651338/80756518-30143100-8b22-11ea-9fdc-2a0ff13ca007.png)
 
 In your webpage, you would use the PracticeSet component specifying a bunch of question-answer pairs, and it will
 use localStorage to store user's recall performance in order to determine practice frequency. 
