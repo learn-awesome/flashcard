@@ -60,6 +60,11 @@ export default {
       type: String,
       required: false
     },
+    timeunit: {
+      type: String,
+      required: true,
+      default: "days"
+    },
     debug: {
       type: String,
       required: false // default will be taken as false
@@ -117,8 +122,10 @@ export default {
         var previous_ts = window.localStorage.getItem(this.qid + "_sts");
         var previous_date = new Date(previous_ts);
 
+        var timefactor = (this.timeunit === "seconds") ? 1 : (3600 * 24); //seconds
+
         var diff_in_days = Math.floor(
-          (current_date.getTime() - previous_date.getTime()) / (1000.0 * 3600 * 24)
+          (current_date.getTime() - previous_date.getTime()) / (1000.0 * timefactor)
         );
         if (diff_in_days > Math.pow(2, this.level)) {
           // increment level

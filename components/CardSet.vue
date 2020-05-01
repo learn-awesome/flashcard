@@ -9,8 +9,12 @@
         @flipped=onFlipped
         :flipped="card.flipped"
         :answered="null"
+        :timeunit="timeunit"
       />
-      <p v-show="cards.length == 0" class="message">All done! 👍<br/><span>Come back later to this page to practice again.</span></p>
+      <p v-show="cards.length == 0" class="message">
+      All done! 👍<br/>
+      <span>Come back later to this page to practice again. Your progress is only kept on your own device.</span>
+      </p>
   </div>
 </template>
 
@@ -23,6 +27,14 @@ export default {
         return {
             cards: this.$parent.flashCards
         }
+    },
+
+    props: {
+      timeunit: {
+        type: String,
+        required: true,
+        default: "days"
+      }
     },
 
   methods: {

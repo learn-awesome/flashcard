@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <CardSet></CardSet>
+    <CardSet timeunit="seconds"></CardSet>
   </div>
 </template>
 
