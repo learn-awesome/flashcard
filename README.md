@@ -9,12 +9,12 @@ These components make it super-easy to achieve this without requiring any server
 
 ![image](https://user-images.githubusercontent.com/51651338/80756518-30143100-8b22-11ea-9fdc-2a0ff13ca007.png)
 
-In your webpage, you would use the PracticeSet component specifying a bunch of question-answer pairs, and it will
+In your webpage, you would use the `CardSet` component specifying a bunch of question-answer pairs, and it will
 use localStorage to store user's recall performance in order to determine practice frequency. 
 
 See [FlashCard.vue](https://github.com/learn-awesome/flashcard/blob/master/components/FlashCard.vue) and [CardSet.vue](https://github.com/learn-awesome/flashcard/blob/master/components/CardSet.vue) to learn more about how this works.
 
-This was built by the https://learnawesome.org community, inspired by https://quantum.country
+This was inspired by https://ncase.me/remember/ and https://quantum.country
 
 # Develop
 
