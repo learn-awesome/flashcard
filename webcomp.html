@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Test of FlashCard WebComponent</title>
+  <script src="https://unpkg.com/vue"></script>
+  <script src="dist/fc.min.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/gh/learn-awesome/flashcard@master/dist/CardSet.umd.min.js"></script> -->
+</head>
+
+<body>
+  <h1>Test of FlashCard WebComponent</h1>
+  <p>Build command: <code><pre>./node_modules/.bin/vue-cli-service build --target wc --name fc 'components/*.vue'</pre></code></p>
+  <fc-flash-card qid="sdf">
+      <fc-question>q1</fc-question>
+      <fc-answer>a1</fc-answer>
+  </fc-flash-card>
+</body>
+</html>

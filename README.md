@@ -16,15 +16,13 @@ See [FlashCard.vue](https://github.com/learn-awesome/flashcard/blob/master/compo
 
 This was inspired by https://ncase.me/remember/ and https://quantum.country
 
-# Develop
-
-Install Vue CLI with: `npm install` and then serve:
-
-`./node_modules/.bin/vue serve -o App.vue`
-
 # Build
 
-The umd files (which also includes CSS) in `dist` folder are generated with:
-`./node_modules/.bin/vue-cli-service build --target lib --name CardSet components/CardSet.vue`
+The UMD files (which also includes CSS) in `dist` folder are generated with:
 
-See `demo.html` for example of how to use the web-component version in plain-old HTML pages without any module bundlers
+Build: `./node_modules/.bin/vue-cli-service build --target lib --name CardSet components/CardSet.vue`
+Test: [demo.html](demo.html)
+
+# TODO: The Web component build is currently not working correctly.
+Build: `./node_modules/.bin/vue-cli-service build --target wc --name fc 'components/*.vue'`
+Test: [webcomp.html](webcomp.html)
