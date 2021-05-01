@@ -2,8 +2,6 @@
 
 VueJS components to add spaced-repetition based flashcard to any webpage. Less than 5KB gzipped, and 15KB unzipped.
 
-## Demo: https://nilesh.trivedi.pw/articles/spacedrep.html
-
 Authors can create their article in a medium that helps their readers not just read, but also REMEMBER their content.
 These components make it super-easy to achieve this without requiring any servers. LocalStorage is used to store user's progress on each question.
 
